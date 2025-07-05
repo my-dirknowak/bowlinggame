@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class Frame {
-    private int wurf1 = 0;
-    private int wurf2 = 0;
-    private int summe = 0;
+    private int roll1 = 0;
+    private int roll2 = 0;
+    private int score = 0;
 
     private Boolean openStrike = false;
     private Boolean strike = false;
