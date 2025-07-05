@@ -1,10 +1,10 @@
-package com.example.helloWorld;
+package com.example.bowling;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HelloWorldApplicationTests {
+class BowlingApplicationTests {
 
 	@Test
 	void contextLoads() {

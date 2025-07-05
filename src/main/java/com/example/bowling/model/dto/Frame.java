@@ -1,4 +1,4 @@
-package com.example.helloWorld.model.dto;
+package com.example.bowling.model.dto;
 
 import lombok.Data;
 

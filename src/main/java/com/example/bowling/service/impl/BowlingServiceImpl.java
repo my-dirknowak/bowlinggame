@@ -1,8 +1,8 @@
-package com.example.helloWorld.service.impl;
+package com.example.bowling.service.impl;
 
-import com.example.helloWorld.model.exception.BowlingIllegalArgumentException;
-import com.example.helloWorld.model.dto.Frame;
-import com.example.helloWorld.service.BowlingService;
+import com.example.bowling.model.exception.BowlingIllegalArgumentException;
+import com.example.bowling.model.dto.Frame;
+import com.example.bowling.service.BowlingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

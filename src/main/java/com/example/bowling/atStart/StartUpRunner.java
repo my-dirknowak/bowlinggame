@@ -1,6 +1,6 @@
-package com.example.helloWorld.atStart;
+package com.example.bowling.atStart;
 
-import com.example.helloWorld.service.BowlingService;
+import com.example.bowling.service.BowlingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -18,8 +18,6 @@ public class StartUpRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        log.info("Hello world");
-
         bowlingService.startBowling();
     }
 }
