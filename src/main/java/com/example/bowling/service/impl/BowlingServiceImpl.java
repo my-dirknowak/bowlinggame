@@ -21,6 +21,8 @@ public class BowlingServiceImpl implements BowlingService {
     @Override
     public void startBowling() {
 
+        log.info("Start up Bowling Service");
+
         for (int frameIndex=0; frameIndex < 10; frameIndex++ ) {
 
            Frame frame = new Frame();
