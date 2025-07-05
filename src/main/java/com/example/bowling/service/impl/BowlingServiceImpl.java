@@ -6,13 +6,14 @@ import com.example.bowling.service.BowlingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import org.springframework.shell.table.*;
 import java.util.Scanner;
 
 @Service
 @Slf4j
 public class BowlingServiceImpl implements BowlingService {
 
-    private Frame[] frames = new Frame[10];;
+    private Frame[] frames = new Frame[10];
 
     private final static int START_PINS =10;
     private Scanner keyboardInput = new Scanner(System.in);
@@ -150,9 +151,8 @@ public class BowlingServiceImpl implements BowlingService {
     }
 
     private int getPinfall() {
-        log.info("Kegeltreffer:");
-        var pinfall = keyboardInput.nextInt();
-        return pinfall;
+        System.out.print("Kegeltreffer:");
+        return keyboardInput.nextInt();
     }
 
     private void checkPinfall(int pinfall, int restPins) throws BowlingIllegalArgumentException {
@@ -170,39 +170,54 @@ public class BowlingServiceImpl implements BowlingService {
     }
 
     private void printFrames(int maxFrameLimit) {
-        var frameLineMessage = "Frame    ";
-        var columnDivertLine =  "---------";
-        var rollLineMessage =   "Rolls:    ";
-        var scoreLineMessage =    "Score:  ";
 
+        String[][] shellTableData = new String[3][1 + maxFrameLimit + 1];
+
+        //Set header
+        shellTableData[0][0] = "Frame";
+        shellTableData[1][0] = "Wurf";
+        shellTableData[2][0] = "Punkte";
+
+        //Set values
         for (int frameIndex=0; frameIndex<=maxFrameLimit; frameIndex++) {
-            frameLineMessage += "      %d|".formatted(frameIndex + 1);
-            columnDivertLine +=  "-------+";
-            rollLineMessage += getRollLinePrint(frameIndex);
-            scoreLineMessage += getScoreLinePrint(frameIndex);
+            shellTableData[0][frameIndex + 1] = String.valueOf(frameIndex + 1);
+            shellTableData[1][frameIndex + 1] = getRollLinePrint(frameIndex);
+            shellTableData[2][frameIndex + 1] = getScoreLinePrint(frameIndex);
         }
 
-        log.info(frameLineMessage);
-        log.info(columnDivertLine);
-        log.info(rollLineMessage);
-        log.info(scoreLineMessage);
+        String tableStringPrint = getTablePrint(maxFrameLimit, shellTableData);
+        log.info(tableStringPrint);
+    }
+
+    private static String getTablePrint(int maxFrameLimit, String[][] shellTableData) {
+        TableModel model = new ArrayTableModel(shellTableData);
+        TableBuilder tableBuilder = new TableBuilder(model)
+                .addHeaderAndVerticalsBorders(BorderStyle.oldschool);
+
+        for (int col = 0; col <= maxFrameLimit +1; col++) {
+            tableBuilder.on(CellMatchers.column(col))
+                    .addAligner(SimpleHorizontalAligner.center);
+        }
+        Table table = tableBuilder.build();
+
+        return  "\n" + table.render(120);
     }
 
     private String getRollLinePrint(int frameIndex) {
         if (frames[frameIndex].getStrike()) {
-            return " X     |";
+            return " X     ";
         } else if (frames[frameIndex].getSpare()) {
-            return " %d  / |".formatted(frames[frameIndex].getRoll1());
+            return " %d  / ".formatted(frames[frameIndex].getRoll1());
         } else {
-            return " %d %d |".formatted(frames[frameIndex].getRoll1(), frames[frameIndex].getRoll2());
+            return " %d %d ".formatted(frames[frameIndex].getRoll1(), frames[frameIndex].getRoll2());
         }
     }
 
     private String getScoreLinePrint(int frameIndex) {
         if (frames[frameIndex].getOpenStrike() || frames[frameIndex].getOpenSpare()) {
-            return "     - |";
+            return "     - ";
         } else {
-            return "    %d |".formatted(frames[frameIndex].getScore());
+            return "    %d ".formatted(frames[frameIndex].getScore());
         }
     }
 }
